@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, AfterInsert } from 'typeorm';
+import bcrypt from 'bcrypt';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -9,4 +10,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @AfterInsert()
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 8);
+  }
 }
