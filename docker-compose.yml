@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  learnnestjs:
+    image: learnnestjs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - MYSQL_HOST=database
+    depends_on:
+      - database
+
+  database:
+    image: mysql:8
+    container_name: 'mysql'
+    ports:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=saota1278
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=udemy
