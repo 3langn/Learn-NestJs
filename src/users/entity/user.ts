@@ -22,6 +22,7 @@ export class User {
 
   @BeforeInsert()
   hashPassword() {
-    this.password = bcrypt.hashSync(this.password, 8);
+    const salt = bcrypt.genSaltSync();
+    this.password = bcrypt.hashSync(this.password, salt);
   }
 }
