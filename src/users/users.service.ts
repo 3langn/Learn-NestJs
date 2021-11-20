@@ -1,17 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './entity/user';
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  createUser(email: string, password: string) {
-    const user = this.repo.create({ email, password });
+  async createUser(userRegisterDto: UserRegisterDto): Promise<User> {
+    await this.isValidEmail(userRegisterDto.email);
+    const user = this.repo.create(userRegisterDto);
     return this.repo.save(user);
   }
 
-  findByEmail(email: string) {
-    return this.repo.findOne({ email });
+  async isValidEmail(email: string): Promise<void> {
+    const user = await this.repo.findOne(email);
+    if (user) {
+      throw new UnauthorizedException('Email already in use');
+    }
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repo.findOne({ email });
+    if (!user) {
+      throw new NotFoundException('Email not found');
+    }
+    return user;
+  }
+
+  findById(id: string): Promise<User> {
+    return this.repo.findOne({ id });
   }
 }
