@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { User } from './entity/user';
+import { User } from './user';
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
@@ -18,14 +18,14 @@ export class UsersService {
   }
 
   async isValidEmail(email: string): Promise<void> {
-    const user = await this.repo.findOne(email);
+    const user = await this.repo.findOne({ where: { email } });
     if (user) {
       throw new UnauthorizedException('Email already in use');
     }
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.repo.findOne({ email });
+    const user = await this.repo.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException('Email not found');
     }
@@ -33,6 +33,6 @@ export class UsersService {
   }
 
   findById(id: string): Promise<User> {
-    return this.repo.findOne({ id });
+    return this.repo.findOne({ where: { id } });
   }
 }

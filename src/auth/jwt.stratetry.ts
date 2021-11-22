@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { User } from 'src/user/entity/user';
+import { User } from 'src/user/user';
 import constants from 'src/constants/constants';
 import { Repository } from 'typeorm';
 

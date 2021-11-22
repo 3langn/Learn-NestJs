@@ -1,4 +1,4 @@
-import { User } from 'src/user/entity/user';
+import { User } from 'src/user/user';
 import { TokenType } from 'src/constants/enum';
 import {
   Column,

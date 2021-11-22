@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entity/user';
+import { User } from 'src/user/user';
 import constants from 'src/constants/constants';
 import { TokenType } from 'src/constants/enum';
 import { Repository } from 'typeorm';
@@ -38,7 +38,7 @@ export class TokenService {
     return this.tokenRepo.save(tokenDoc);
   }
 
-  generateToken(userId: string, expires: number) {
+  generateToken(userId: string, expires: string | number) {
     const payload = { sub: userId };
 
     return this.jwtService.sign(payload, {

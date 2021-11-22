@@ -35,7 +35,7 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToMany(() => Token, (token) => token.user)
+  @OneToMany(() => Token, (token) => token.userId)
   token: Token[];
 
   @BeforeInsert()
