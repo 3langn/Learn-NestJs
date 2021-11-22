@@ -13,11 +13,11 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { TokenService } from 'src/token/token.service';
-import { UserLoginDto } from 'src/users/dto/user-login.dto';
-import { UserRegisterDto } from 'src/users/dto/user-register.dto';
-import { UserDto } from 'src/users/dto/user.dto';
-import { Serialize } from 'src/users/users.interceptor';
-import { UsersService } from 'src/users/users.service';
+import { UserLoginDto } from 'src/user/dto/user-login.dto';
+import { UserRegisterDto } from 'src/user/dto/user-register.dto';
+import { UserDto } from 'src/user/dto/user.dto';
+import { Serialize } from 'src/user/users.interceptor';
+import { UsersService } from 'src/user/users.service';
 import { AuthService } from './auth.service';
 import { TokenPayloadDto } from './dto/token-payload.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -44,7 +44,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() userLoginDto: UserLoginDto): Promise<TokenPayloadDto> {
     const user = await this.authService.validateUser(userLoginDto);
-    const tokens = await this.tokenService.generateAuthToken(user);
+    const tokens = await this.tokenService.generateAuthToken(user.id);
     return tokens;
   }
 

@@ -1,5 +1,5 @@
-import { User } from 'src/users/entity/user';
-import { TokenType } from 'src/utils/enum';
+import { User } from 'src/user/entity/user';
+import { TokenType } from 'src/constants/enum';
 import {
   Column,
   CreateDateColumn,
@@ -23,7 +23,7 @@ export class Token {
   created_at: Date;
 
   @ManyToOne(() => User, (user) => user.token, { onDelete: 'CASCADE' })
-  user: User;
+  userId: string;
 
   @UpdateDateColumn()
   updated_at: Date;
