@@ -1,30 +1,27 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { UserLoginDto } from 'src/users/dto/user-login.dto';
-import { JwtService } from '@nestjs/jwt';
+import { TokenService } from 'src/token/token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
-    private readonly JwtService: JwtService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async validateUser(userLoginDto: UserLoginDto) {
-    const { password, ...rest } = await this.userService.findByEmail(
-      userLoginDto.email,
-    );
+    const user = await this.userService.findByEmail(userLoginDto.email);
 
-    const isMatchPassword = bcrypt.compareSync(userLoginDto.password, password);
+    const isMatchPassword = bcrypt.compareSync(
+      userLoginDto.password,
+      user.password,
+    );
 
     if (!isMatchPassword) {
       throw new UnauthorizedException('Password is incorrect');
     }
-    return this.JwtService.sign(rest);
+    return user;
   }
 }

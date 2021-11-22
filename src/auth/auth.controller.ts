@@ -1,19 +1,32 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { TokenService } from 'src/token/token.service';
 import { UserLoginDto } from 'src/users/dto/user-login.dto';
 import { UserRegisterDto } from 'src/users/dto/user-register.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { Serialize } from 'src/users/users.interceptor';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
+import { TokenPayloadDto } from './dto/token-payload.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 @Controller()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,
-    private readonly configService: ConfigService,
+    private readonly tokenService: TokenService,
   ) {}
 
   @Serialize(UserDto)
@@ -26,10 +39,19 @@ export class AuthController {
     return await this.userService.createUser(userRegisterDto);
   }
 
-  @ApiOkResponse({ description: 'Success' })
+  @ApiOkResponse({ description: 'Success', type: TokenPayloadDto })
+  @HttpCode(200)
   @Post('login')
-  async login(@Body() userLoginDto: UserLoginDto) {
+  async login(@Body() userLoginDto: UserLoginDto): Promise<TokenPayloadDto> {
     const user = await this.authService.validateUser(userLoginDto);
-    return user;
+    const tokens = await this.tokenService.generateAuthToken(user);
+    return tokens;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('test')
+  @ApiBearerAuth()
+  hello(@Request() req) {
+    return req.user;
   }
 }

@@ -10,4 +10,9 @@ export const config = () => ({
     autoLoadEntities: true,
     synchronize: true,
   },
+  jwt: {
+    accessExpirationMinutes: process.env.JWT_ACCESS_EXPIRATION_MINUTES,
+    refreshExpirationDays: process.env.JWT_REFRESH_EXPIRATION_DAYS,
+    secret: process.env.JWT_SECRET_KEY,
+  },
 });

@@ -1,5 +1,14 @@
-import { PrimaryGeneratedColumn, Column, Entity, BeforeInsert } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  BeforeInsert,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Token } from 'src/token/token.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -19,6 +28,15 @@ export class User {
 
   @Column({ nullable: true })
   phone: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @OneToMany(() => Token, (token) => token.user)
+  token: Token[];
 
   @BeforeInsert()
   hashPassword() {

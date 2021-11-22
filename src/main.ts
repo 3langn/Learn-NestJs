@@ -9,6 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Big Project')
     .setDescription('Big Project')
     .setVersion('1.0.0')
