@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../user/users.service';
+import { UserService } from '../user/users.service';
 import * as bcrypt from 'bcryptjs';
 import { UserLoginDto } from 'src/user/dto/user-login.dto';
 import { TokenService } from 'src/token/token.service';
@@ -7,7 +7,7 @@ import { TokenService } from 'src/token/token.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
+    private readonly userService: UserService,
     private readonly tokenService: TokenService,
   ) {}
 

@@ -11,21 +11,26 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { TokenService } from 'src/token/token.service';
 import { UserLoginDto } from 'src/user/dto/user-login.dto';
 import { UserRegisterDto } from 'src/user/dto/user-register.dto';
 import { UserDto } from 'src/user/dto/user.dto';
 import { Serialize } from 'src/user/users.interceptor';
-import { UsersService } from 'src/user/users.service';
+import { UserService } from 'src/user/users.service';
 import { AuthService } from './auth.service';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { TokenPayloadDto } from './dto/token-payload.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { RolesType } from 'src/common/constants/enum';
+@ApiTags('Authentication')
 @Controller()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService,
+    private readonly userService: UserService,
     private readonly tokenService: TokenService,
   ) {}
 
@@ -48,8 +53,9 @@ export class AuthController {
     return tokens;
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('test')
+  @Roles(RolesType.ADMIN)
   @ApiBearerAuth()
   hello(@Request() req) {
     return req.user;

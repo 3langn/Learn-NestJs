@@ -3,11 +3,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user';
-import constants from 'src/constants/constants';
-import { TokenType } from 'src/constants/enum';
 import { Repository } from 'typeorm';
 import { Token } from './token.entity';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import constants from 'src/common/constants/constants';
+import { TokenType } from 'src/common/constants/enum';
 @Injectable()
 export class TokenService {
   constructor(

@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user';
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async createUser(userRegisterDto: UserRegisterDto): Promise<User> {
@@ -32,7 +32,7 @@ export class UsersService {
     return user;
   }
 
-  findById(id: string): Promise<User> {
-    return this.repo.findOne({ where: { id } });
+  find(options: object): Promise<User> {
+    return this.repo.findOne({ where: options });
   }
 }

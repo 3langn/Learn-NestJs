@@ -4,3 +4,8 @@ export enum TokenType {
   VerifyEmailToken = 'verifyEmail',
   RefreshPasswordToken = 'refreshPassword',
 }
+
+export enum RolesType {
+  ADMIN = 'admin',
+  USER = 'user',
+}

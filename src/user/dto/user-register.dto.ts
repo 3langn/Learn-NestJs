@@ -7,6 +7,8 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { RolesType } from 'src/common/constants/enum';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 export class UserRegisterDto {
   @ApiProperty({ default: 'firstname' })
@@ -29,6 +31,13 @@ export class UserRegisterDto {
   @IsString()
   @MinLength(6)
   readonly password: string;
+
+  @ApiProperty({
+    enum: RolesType,
+    default: RolesType.USER,
+  })
+  @IsString()
+  readonly roles: RolesType;
 
   @ApiProperty({ default: '0999999999' })
   @IsPhoneNumber('VN')

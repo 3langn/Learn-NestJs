@@ -1,5 +1,5 @@
+import { TokenType } from 'src/common/constants/enum';
 import { User } from 'src/user/user';
-import { TokenType } from 'src/constants/enum';
 import {
   Column,
   CreateDateColumn,
