@@ -11,7 +11,8 @@ import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 @Injectable()
 export class TokenService {
   constructor(
-    @InjectRepository(Token) private repo: Repository<Token>,
+    @InjectRepository(Token) private tokenRepo: Repository<Token>,
+    @InjectRepository(User) private userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -19,11 +20,11 @@ export class TokenService {
   async generateAuthToken(userId: string): Promise<TokenPayloadDto> {
     const accessToken = this.generateToken(
       userId,
-      this.configService.get(constants.JWT_ACCESS_EXPIRATION_MINUTES),
+      this.configService.get(constants.JWT_ACCESS_EXPIRATION),
     );
     const refreshToken = this.generateToken(
       userId,
-      this.configService.get(constants.JWT_REFRESH_EXPIRATION_DAYS),
+      this.configService.get(constants.JWT_REFRESH_EXPIRATION),
     );
     await this.saveToken(refreshToken, userId, TokenType.RefreshToken);
     return {
@@ -33,8 +34,8 @@ export class TokenService {
   }
 
   saveToken(token: string, userId: string, tokenType: TokenType) {
-    const tokenDoc = this.repo.create({ token, userId, type: tokenType });
-    return this.repo.save(tokenDoc);
+    const tokenDoc = this.tokenRepo.create({ token, userId, type: tokenType });
+    return this.tokenRepo.save(tokenDoc);
   }
 
   generateToken(userId: string, expires: number) {
@@ -53,7 +54,7 @@ export class TokenService {
     );
     console.log(payload);
 
-    const tokenDoc = await this.repo.findOne({
+    const tokenDoc = await this.tokenRepo.findOne({
       token,
       type,
       userId: payload.id,
@@ -67,8 +68,28 @@ export class TokenService {
   async generateVerifyEmailToken(userId: string) {
     const verifyEmailToken = this.generateToken(
       userId,
-      this.configService.get(constants.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES),
+      this.configService.get(constants.JWT_VERIFY_EMAIL_EXPIRATION),
     );
-    await this.saveToken(verifyEmailToken, userId, TokenType.VerifyEmailToken);
+    return await this.saveToken(
+      verifyEmailToken,
+      userId,
+      TokenType.VerifyEmailToken,
+    );
+  }
+
+  async generateResetPasswordToken(userEmail: string) {
+    const user = await this.userRepo.findOne({ where: { email: userEmail } });
+    if (!user) {
+      throw new NotFoundException('Email does not exist');
+    }
+    const refreshPasswordToken = this.generateToken(
+      user.id,
+      this.configService.get(constants.JWT_RESET_PASSWORD_EXPIRATION),
+    );
+    return await this.saveToken(
+      refreshPasswordToken,
+      user.id,
+      TokenType.RefreshPasswordToken,
+    );
   }
 }

@@ -11,10 +11,10 @@ export const config = () => ({
     synchronize: true,
   },
   jwt: {
-    accessExpirationMinutes: process.env.JWT_ACCESS_EXPIRATION_MINUTES,
-    refreshExpirationDays: process.env.JWT_REFRESH_EXPIRATION_DAYS,
-    jwtVerifyEmailExpirationMinutes:
-      process.env.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
+    accessExpiration: process.env.JWT_ACCESS_EXPIRATION,
+    refreshExpiration: process.env.JWT_REFRESH_EXPIRATION,
+    jwtVerifyEmailExpiration: process.env.JWT_VERIFY_EMAIL_EXPIRATION,
     secret: process.env.JWT_SECRET_KEY,
+    resetPasswordExpiration: process.env.JWT_RESET_PASSWORD_EXPIRATION,
   },
 });
