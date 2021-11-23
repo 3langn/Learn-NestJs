@@ -13,18 +13,18 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { TokenService } from 'src/token/token.service';
-import { UserLoginDto } from 'src/user/dto/user-login.dto';
-import { UserRegisterDto } from 'src/user/dto/user-register.dto';
-import { UserDto } from 'src/user/dto/user.dto';
-import { Serialize } from 'src/user/users.interceptor';
-import { UserService } from 'src/user/users.service';
+import { RolesType } from '../common/constants/enum';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { TokenService } from '../token/token.service';
+import { UserLoginDto } from '../user/dto/user-login.dto';
+import { UserRegisterDto } from '../user/dto/user-register.dto';
+import { UserDto } from '../user/dto/user.dto';
+import { Serialize } from '../user/users.interceptor';
+import { UserService } from '../user/users.service';
 import { AuthService } from './auth.service';
-import { Roles } from 'src/common/decorators/roles.decorator';
 import { TokenPayloadDto } from './dto/token-payload.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { RolesType } from 'src/common/constants/enum';
 @ApiTags('Authentication')
 @Controller()
 export class AuthController {

@@ -7,8 +7,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { RolesType } from 'src/common/constants/enum';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesType } from '../../common/constants/enum';
 
 export class UserRegisterDto {
   @ApiProperty({ default: 'firstname' })

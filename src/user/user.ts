@@ -8,8 +8,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { Token } from 'src/token/token.entity';
-import { RolesType } from 'src/common/constants/enum';
+import { RolesType } from '../common/constants/enum';
+import { Token } from '../token/token.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')

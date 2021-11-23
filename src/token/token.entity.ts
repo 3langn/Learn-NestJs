@@ -1,5 +1,3 @@
-import { TokenType } from 'src/common/constants/enum';
-import { User } from 'src/user/user';
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TokenType } from '../common/constants/enum';
+import { User } from '../user/user';
 @Entity()
 export class Token {
   @PrimaryGeneratedColumn('uuid')
