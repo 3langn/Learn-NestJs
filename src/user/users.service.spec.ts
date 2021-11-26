@@ -65,9 +65,6 @@ describe('UsersService', () => {
   });
 
   it('should error if email already in use', async () => {
-    console.log(
-      await mockUserRepository.findOne({ where: registerUser.email }),
-    );
     try {
       await service.createUser(registerUser);
     } catch (error) {

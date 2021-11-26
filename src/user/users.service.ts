@@ -16,8 +16,6 @@ export class UserService {
     const user = await this.repo.findOne({
       where: { email: userRegisterDto.email },
     });
-    console.log(user);
-
     if (user) {
       throw new UnauthorizedException('Email already in use');
     }

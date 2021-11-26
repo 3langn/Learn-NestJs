@@ -17,4 +17,10 @@ export const config = () => ({
     secret: process.env.JWT_SECRET_KEY,
     resetPasswordExpiration: process.env.JWT_RESET_PASSWORD_EXPIRATION,
   },
+  host: {
+    url: process.env.HOST_URL,
+  },
+  email: {
+    host: process.env.EMAIL_HOST,
+  },
 });
